@@ -7,7 +7,7 @@
 	<key>CFBundleExecutable</key>
 	<string>Hello</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.plexapp.plugins.CTV</string>
+	<string>com.plexapp.plugins.CTVGlobeMedia</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

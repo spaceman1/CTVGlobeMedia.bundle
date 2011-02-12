@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<site site="http://watch.ctv.ca"
-	    plugin="http://watch.ctv.ca/Flash/player.swf.*"
+<site site="http://watch.muchmusic.com"
+	    plugin="http://watch.muchmusic.com/Flash/player.swf.*"
 			initialState="playing"
 			version="1.0">
 			
-	<crop x="0" y="0" width="646" height="356" />
+	<crop x="0" y="38" width="415" height="236" />
 
 
 	<seekbar type="simple">
@@ -15,7 +15,6 @@
 		</played>
 	</seekbar>
 
-	
 	<!-- PLAYING -->
 	<state name="playing">
 		
@@ -34,7 +33,7 @@
 	<!-- PAUSED -->
 	<state name="paused">
 		
-		<!-- Wait for play command 
+		<!-- Wait for play command -->
 		<event>
 			<condition>
 				<command name="play" />
@@ -45,5 +44,4 @@
 		</event>
 		
 	</state>
-	
 </site>
