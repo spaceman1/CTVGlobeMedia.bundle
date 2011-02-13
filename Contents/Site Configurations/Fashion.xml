@@ -8,8 +8,8 @@
 
 
 	<seekbar type="simple">
-		<start x="4" y="330" />
-		<end   x="640" y="330" />
+		<start x="65" y="335" />
+		<end   x="265" y="335" />
 		<played>
 			<color rgb="5E0C01" />
 		</played>
@@ -24,7 +24,7 @@
 				<command name="pause" />
 			</condition>
 			<action>
-				<click x="22" y="350" />
+				<click x="30" y="322" />
 			</action>
 		</event>
 		
@@ -39,7 +39,7 @@
 				<command name="play" />
 			</condition>
 			<action>
-				<click x="22" y="350" />
+				<click x="30" y="322" />
 			</action>
 		</event>
 		

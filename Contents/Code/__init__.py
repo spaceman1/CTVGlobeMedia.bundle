@@ -6,26 +6,26 @@ NAME            = L('Title')
 ART   = 'art-default.jpg'
 ICON  = 'icon-default.png'
 
-CTV_ART       = 'ctv-art.jpg'
-CTV_ICON      = 'ctv-icon.png'
-CTVNEWS_ART	  = ''
-CTVNEWS_ICON  = ''
-TSN_ART		  = ''
-TSN_ICON	  = ''
-DISCOVERY_ART = 'discovery-art.jpg'
-DISCOVERY_ICON= 'discovery-icon.png'
-COMEDY_ART	  = ''
-COMEDY_ICON	  = ''
-BRAVO_ART	  = ''
-BRAVO_ICON	  = ''
-BRAVOFACT_ART = ''
-BRAVOFACT_ICON= ''
-SPACE_ART	  = ''
-SPACE_ICON	  = ''
-MUCH_ART	  = ''
-MUCH_ICON	  = ''
-FASHION_ART	  = ''
-FASHION_ICON  = ''
+CTV_ART       = 'art-ctv.jpg'
+CTV_ICON      = 'icon-ctv.png'
+CTVNEWS_ART   = 'art-ctvnews.jpg'
+CTVNEWS_ICON  = 'icon-ctvnews.png'
+TSN_ART       = 'art-tsn.jpg'
+TSN_ICON      = 'icon-tsn.png'
+DISCOVERY_ART = 'art-discovery.jpg'
+DISCOVERY_ICON= 'icon-discovery.png'
+COMEDY_ART    = 'art-comedy.jpg'
+COMEDY_ICON   = 'icon-comedy.png'
+BRAVO_ART     = 'art-bravo.jpg'
+BRAVO_ICON    = 'icon-bravo.png'
+BRAVOFACT_ART = 'art-bravofact.jpg'
+BRAVOFACT_ICON= 'icon-bravofact.png'
+SPACE_ART     = 'art-space.jpg'
+SPACE_ICON    = 'icon-space.png'
+MUCH_ART      = 'art-much.jpg'
+MUCH_ICON     = 'icon-much.png'
+FASHION_ART   = 'art-fashion.jpg'
+FASHION_ICON  = 'icon-fashion.png'
 
 VIDEO_PREFIX    = "/video/ctvglobemedia"
 
@@ -55,7 +55,7 @@ def MainMenu():
   dir.Append(Function(DirectoryItem(VideoMenu, title=L('Discovery Channel'), thumb=R(DISCOVERY_ICON), art=R(DISCOVERY_ART)), network='discoverychannel.ca'))
   dir.Append(Function(DirectoryItem(VideoMenu, title=L('The Comedy Network'), thumb=R(COMEDY_ICON), art=R(COMEDY_ART)), network='thecomedynetwork.ca'))
   dir.Append(Function(DirectoryItem(VideoMenu, title=L('Bravo!'), thumb=R(BRAVO_ICON), art=R(BRAVO_ART)), network='bravo.ca'))
-  dir.Append(Function(DirectoryItem(VideoMenu, title=L('Bravo!Fact'), thumb=(BRAVOFACT_ICON), art=(BRAVOFACT_ART)), network='bravofact.com'))
+  dir.Append(Function(DirectoryItem(VideoMenu, title=L('Bravo!Fact'), thumb=R(BRAVOFACT_ICON), art=R(BRAVOFACT_ART)), network='bravofact.com'))
   dir.Append(Function(DirectoryItem(VideoMenu, title=L('Space'), thumb=R(SPACE_ICON), art=R(SPACE_ART)), network='spacecast.com'))
   dir.Append(Function(DirectoryItem(VideoMenu, title=L('MuchMusic'), thumb=R(MUCH_ICON), art=R(MUCH_ART)), network='muchmusic.com'))
   dir.Append(Function(DirectoryItem(VideoMenu, title=L('Fashion Television'), thumb=R(FASHION_ICON), art=R(FASHION_ART)), network='fashiontelevision.com'))
@@ -65,6 +65,8 @@ def MainMenu():
 
 def VideoMenu(sender, network):
   dir = MediaContainer(ViewGroup='List', title2=sender.itemTitle, art=sender.art)
+  dir.Append(WebVideoItem(URL % network, title='Just Watch', subtitle='Continuous play', date='',
+    summary="Don't care what you watch? Just watch whatever's on!", thumb = sender.thumb))
   dir.Append(Function(DirectoryItem(GetFeatured, title="Featured"), network=network, title2="Featured"))
   dir.Append(Function(DirectoryItem(GetVideoLibrary, title="Video Library"), level=1, url=((URL % network)+'library/'), title2="Video Library"))
   dir.Append(Function(InputDirectoryItem(Search, title=L("Search"), prompt=L("Search for Videos"), thumb=R('search.png'))))
@@ -95,11 +97,11 @@ def GetVideoLibrary(sender, url, level, title2):
         thumb =  show.xpath('.//dd[@class="Thumbnail"]/a/img')[0].get('src')
         thumb = thumb.replace('80/60', '512/384')
       except:
-        thumb =R(ICON)
+        thumb = sender.thumb
       #Log(thumb)
       dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))    
     else:
-      dir.Append(Function(DirectoryItem(GetVideoLibrary, title, thumb=R('icon-default.png')), level=level+1, url=url, title2=title))
+      dir.Append(Function(DirectoryItem(GetVideoLibrary, title, thumb=sender.thumb), level=level+1, url=url, title2=title))
   return dir
 
 ####################################################################################################
@@ -137,7 +139,7 @@ def GetVideoFromEpisodeId(episodeId, network):
 def Search(sender, network, query):
   dir = MediaContainer(viewGroup='Details', title2='Search Results')
   query = query.replace(' ', '+')
-  searchResults = HTML.ElementFromURL(SEARCU_URL % (network, query))
+  searchResults = HTML.ElementFromURL(SEARCH_URL % (network, query))
   #Log(searchResults)
   for result in searchResults.xpath('//li'):
     #Log(result.xpath('.//dl')[0].get('class'))
