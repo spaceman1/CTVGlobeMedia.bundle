@@ -99,6 +99,8 @@ def GetVideoLibrary(sender, url, level, title2):
       except:
         thumb = sender.thumb
       #Log(thumb)
+      if SilverlightCheck(url, level): url = url + '#Silverlight'
+      else: pass
       dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))    
     else:
       dir.Append(Function(DirectoryItem(GetVideoLibrary, title, thumb=sender.thumb), level=level+1, url=url, title2=title))
@@ -119,6 +121,8 @@ def GetFeatured(sender, network, title2):
       thumb =  item.find('dd[@class="Thumbnail"]/a/img').get('src')
       thumb = thumb.replace('80/60', '512/384')
       #Log(thumb)
+      if SilverlightCheck(url, level): url = url + '#Silverlight'
+      else: pass
       dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))    
     except: pass    
   return dir
@@ -163,11 +167,18 @@ def Search(sender, network, query):
         #Log(episodeId)
         url = GetVideoFromEpisodeId(episodeId)
         #Log(url)
+        if SilverlightCheck(url, level): url = url + '#Silverlight'
+        else: pass
         dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))            
       except: pass      
   return dir
 
 ################################################################################
 
-
-
+def SilverlightCheck(url, level):
+  for clip in HTML.ElementFromURL(url).xpath('//div[@id="Level%d"]//dl[@class='Item']):
+    clipInfo = clip.xpath('.//a')[0].get('onclick')
+    info = JSON.ObjectFromString(clipInfo.split('return Playlist.GetInstance().Play(new Video( ')[1].split(' ), true, true  )')[0])
+    if info['Format'] == 'WMV': return True
+    else: pass
+  return False
