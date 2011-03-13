@@ -1,5 +1,4 @@
 import re, string
-#from lxml import html
 
 NAME            = L('Title')
 
@@ -68,7 +67,8 @@ def VideoMenu(sender, network):
   dir.Append(WebVideoItem(URL % network, title='Just Watch', subtitle='Continuous play', date='',
     summary="Don't care what you watch? Just watch whatever's on!", art=sender.art, thumb = sender.thumb))
   dir.Append(Function(DirectoryItem(GetFeatured, title="Featured", art=sender.art, thumb = sender.thumb), network=network, title2="Featured"))
-  dir.Append(Function(DirectoryItem(GetVideoLibrary, title="Video Library", art=sender.art, thumb = sender.thumb), level=1, url=((URL % network)+'library/'), title2="Video Library"))
+  dir.Append(Function(DirectoryItem(GetVideoLibrary, title="Video Library", art=sender.art, thumb = sender.thumb), level=1, url=((URL % network)+'library/'),
+    title2="Video Library"))
   dir.Append(Function(InputDirectoryItem(Search, title=L("Search"), prompt=L("Search for Videos"), art=sender.art, thumb=R('search.png'))))
   return dir
 
@@ -124,7 +124,8 @@ def GetFeatured(sender, network, title2):
       if SilverlightCheck(url, level): url = url + '#Silverlight'
       else: url = url + '#Flash'
       dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))    
-    except: Log('Failed')    
+    except: #Log('Failed')
+      pass
   return dir
 
 ################################################################################
