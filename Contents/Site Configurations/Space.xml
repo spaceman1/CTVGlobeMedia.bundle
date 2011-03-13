@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site site="http://watch.spacecast.com"
+	    plugin="http://watch.spacecast.com/Flash/player.swf.*"
+			initialState="playing"
+			version="1.0">
+			
+	<crop x="0" y="0" width="646" height="324" />
+
+
+	<seekbar type="thumb">
+		<start x="60" y="330" />
+		<end   x="260" y="335" />
+		<played>
+			<color rgb="d3d3d3" />
+		</played>
+	</seekbar>
+
+	<!-- PLAYING -->
+	<state name="playing">
+		
+		<!-- Click to pause -->
+		<event>
+			<condition>
+				<command name="pause" />
+			</condition>
+			<action>
+				<click x="22" y="332" />
+			</action>
+		</event>
+		
+	</state>
+	
+	<!-- PAUSED -->
+	<state name="paused">
+		
+		<!-- Wait for play command -->
+		<event>
+			<condition>
+				<command name="play" />
+			</condition>
+			<action>
+				<click x="22" y="332" />
+			</action>
+		</event>
+		
+	</state>
+</site>

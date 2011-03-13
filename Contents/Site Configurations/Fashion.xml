@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site site="http://watch.fashiontelevision.com"
+	    plugin="http://watch.fashiontelevision.com/Flash/player.swf.*"
+			initialState="playing"
+			version="1.0">
+			
+	<crop x="0" y="0" width="415" height="312" />
+
+
+	<seekbar type="simple">
+		<start x="65" y="335" />
+		<end   x="265" y="335" />
+		<played>
+			<color rgb="5E0C01" />
+		</played>
+	</seekbar>
+
+	<!-- PLAYING -->
+	<state name="playing">
+		
+		<!-- Click to pause -->
+		<event>
+			<condition>
+				<command name="pause" />
+			</condition>
+			<action>
+				<click x="30" y="322" />
+			</action>
+		</event>
+		
+	</state>
+	
+	<!-- PAUSED -->
+	<state name="paused">
+		
+		<!-- Wait for play command -->
+		<event>
+			<condition>
+				<command name="play" />
+			</condition>
+			<action>
+				<click x="30" y="322" />
+			</action>
+		</event>
+		
+	</state>
+</site>
