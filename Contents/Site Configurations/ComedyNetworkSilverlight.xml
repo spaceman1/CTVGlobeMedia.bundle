@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site site="http://watch.thecomedynetwork.ca/.*#Silverlight"
-	    plugin="http://watch.thecomedynetwork.ca/SilverlightPlayer.*"
+	    plugin="silverlight"
 			initialState="playing"
 			version="1.0">
 			
-	<crop x="0" y="0" width="640" height="316" />
+	<crop x="0" y="0" width="640" height="310" />
 
 
 	<seekbar type="simple">
