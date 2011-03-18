@@ -66,16 +66,17 @@ def VideoMenu(sender, network):
   dir = MediaContainer(ViewGroup='List', title2=sender.itemTitle, art=sender.art)
   dir.Append(WebVideoItem(URL % network, title='Just Watch', subtitle='Continuous play', date='',
     summary="Don't care what you watch? Just watch whatever's on!", art=sender.art, thumb = sender.thumb))
-  dir.Append(Function(DirectoryItem(GetFeatured, title="Featured", art=sender.art, thumb = sender.thumb), network=network, title2="Featured"))
+  dir.Append(Function(DirectoryItem(GetFeatured, title="Featured", art=sender.art, thumb = sender.thumb), network=network, title2="Featured", title1=sender.itemTitle))
   dir.Append(Function(DirectoryItem(GetVideoLibrary, title="Video Library", art=sender.art, thumb = sender.thumb), level=1, url=((URL % network)+'library/'),
-    title2="Video Library"))
+    title2="Video Library", title1=sender.itemTitle))
   dir.Append(Function(InputDirectoryItem(Search, title=L("Search"), prompt=L("Search for Videos"), art=sender.art, thumb=R('search.png'))))
   return dir
 
 ####################################################################################################
 
-def GetVideoLibrary(sender, url, level, title2):
-  dir = MediaContainer(title2=title2)
+def GetVideoLibrary(sender, url, level, title2, title1=''):
+  dir = MediaContainer(title1=title1, title2=title2)
+  Log(str(sender))
   for show in HTML.ElementFromURL(url).xpath('.//div[@id="Level%d"]/ul/li' % level):
     title = None
     url = url    
@@ -101,15 +102,15 @@ def GetVideoLibrary(sender, url, level, title2):
       #Log(thumb)
       if SilverlightCheck(url, level): url = url + '#Silverlight'
       else: url = url + '#Flash'
-      dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))    
+      dir.Append(WebVideoItem(url, title, date="", summary=summary, art=sender.art, thumb=thumb))    
     else:
-      dir.Append(Function(DirectoryItem(GetVideoLibrary, title, thumb=sender.thumb), level=level+1, url=url, title2=title))
+      dir.Append(Function(DirectoryItem(GetVideoLibrary, title, art=sender.art, thumb = sender.thumb), level=level+1, url=url, title2=title, title1=title1))
   return dir
 
 ####################################################################################################
 
-def GetFeatured(sender, network, title2):
-  dir = MediaContainer(title2=title2)
+def GetFeatured(sender, network, title2, title1=''):
+  dir = MediaContainer(title1=title1, title2=title2)
   for show in HTML.ElementFromURL((URL % network) + 'featured/').xpath('//div[@class="Frame"]/ul/li'):    
     try:
       item = show.xpath('.//dl[@class="Item"]')[0]    
@@ -121,10 +122,15 @@ def GetFeatured(sender, network, title2):
       thumb =  item.find('dd[@class="Thumbnail"]/a/img').get('src')
       thumb = thumb.replace('80/60', '512/384')
       #Log(thumb)
-      if SilverlightCheck(url, level): url = url + '#Silverlight'
-      else: url = url + '#Flash'
-      dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))    
-    except: #Log('Failed')
+      #if SilverlightCheck(url, level):
+        #url = url + '#Silverlight'
+        #Log('Silverlight found.')
+      #else:
+        #url = url + '#Flash'
+        #Log('Not a silverlight video')
+      dir.Append(WebVideoItem(url, title, date="", summary=summary, art=sender.art, thumb=thumb))    
+    except:
+      #Log('Failed')
       pass
   return dir
 
@@ -170,7 +176,7 @@ def Search(sender, network, query):
         #Log(url)
         if SilverlightCheck(url, level): url = url + '#Silverlight'
         else: url = url + '#Flash'
-        dir.Append(WebVideoItem(url, title, date="", summary=summary, thumb=thumb))            
+        dir.Append(WebVideoItem(url, title, date="", summary=summary, art=sender.art, thumb=thumb))            
       except: pass      
   return dir
 

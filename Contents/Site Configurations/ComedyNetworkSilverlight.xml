@@ -4,8 +4,8 @@
 			initialState="playing"
 			version="1.0">
 			
-	<crop x="0" y="0" width="640" height="310" />
-
+	<crop x="50" y="0" width="540" height="314" />
+	<!-- total player width = 640, 112pixel wide black bars on either side -->
 
 	<seekbar type="simple">
 		<start x="65" y="335" />

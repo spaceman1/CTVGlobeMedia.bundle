@@ -6,7 +6,7 @@
 			version="1.0">
 			
 
-	<crop x="0" y="0" width="640" height="324" />
+	<crop x="0" y="0" width="640" height="357" />
 
 
 	<seekbar type="simple">
