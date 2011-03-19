@@ -8,10 +8,10 @@
 
 
 	<seekbar type="thumb">
-		<start x="60" y="330" />
-		<end   x="260" y="335" />
+		<start x="1" y="358" />
+		<end   x="639" y="358" />
 		<played>
-			<color rgb="d3d3d3" />
+			<color rgb="5E0C01" />
 		</played>
 	</seekbar>
 
