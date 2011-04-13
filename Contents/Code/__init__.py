@@ -31,7 +31,7 @@ VIDEO_PREFIX    = "/video/ctvglobemedia"
 URL		= 'http://watch.%s/'
 LIBRARY_URL     = 'http://watch.%s/library/'
 SEARCH_URL	= 'http://watch.%s/AJAX/SearchResults.aspx?query=%s'
-CLIP_LOOKUP	= 'http://watch.discoverychannel.ca/AJAX/ClipLookup.aspx?episodeid=%s'
+CLIP_LOOKUP	= 'http://watch.%s/AJAX/ClipLookup.aspx?episodeid=%s'
 
 ####################################################################################################
 
@@ -69,7 +69,7 @@ def VideoMenu(sender, network):
   dir.Append(Function(DirectoryItem(GetFeatured, title="Featured", art=sender.art, thumb = sender.thumb), network=network, title2="Featured", title1=sender.itemTitle))
   dir.Append(Function(DirectoryItem(GetVideoLibrary, title="Video Library", art=sender.art, thumb = sender.thumb), level=1, url=((URL % network)+'library/'),
     title2="Video Library", title1=sender.itemTitle))
-  dir.Append(Function(InputDirectoryItem(Search, title=L("Search"), prompt=L("Search for Videos"), art=sender.art, thumb=R('search.png'))))
+  dir.Append(Function(InputDirectoryItem(Search, title=L("Search"), prompt=L("Search for Videos"), art=sender.art, thumb=R('search.png')), network=network))
   return dir
 
 ####################################################################################################
@@ -155,29 +155,26 @@ def Search(sender, network, query):
   for result in searchResults.xpath('//li'):
     #Log(result.xpath('.//dl')[0].get('class'))
     if result.xpath('.//dl')[0].get('class') != "NotPlayable":      
-      try:
-        try:
-          result.find('.//b').drop_tag()
-          result.find('.//strong').drop_tag()
-        except: pass 
-        title = result.xpath('./dl/dd[@class="ResultTitle"]/a')[0].text
-        #Log(title)
-        try: summary = result.xpath('./dl/dd[@class="ResultDescription"]').text
-        except: summary = "No Description Available"
-        #Log(summary)
-        thumb = result.find('dl/dd[@class="SearchThumbnail"]/a/img').get('src')
-        thumb = thumb.replace('80/60', '512/384')
-        #Log(thumb)
-        episodeId = result.xpath('./dl/dd[@class="PlayNow"]/a')[0].get('href')
-        #Log(episodeId)
-        episodeId = episodeId.split('PlayEpisode(')[1].replace(")", "")
-        #Log(episodeId)
-        url = GetVideoFromEpisodeId(episodeId)
-        #Log(url)
-        if SilverlightCheck(url, level): url = url + '#Silverlight'
-        else: url = url + '#Flash'
-        dir.Append(WebVideoItem(url, title, date="", summary=summary, art=sender.art, thumb=thumb))            
-      except: pass      
+#          result.find('.//b').drop_tag()
+ #         result.find('.//strong').drop_tag()
+
+      title = result.xpath('./dl/dd[@class="ResultTitle"]/a')[0].text
+      #Log(title)
+      try: summary = result.xpath('./dl/dd[@class="ResultDescription"]').text
+      except: summary = "No Description Available"
+      #Log(summary)
+      thumb = result.find('dl/dd[@class="SearchThumbnail"]/a/img').get('src')
+      thumb = thumb.replace('80/60', '512/384')
+      #Log(thumb)
+      episodeId = result.xpath('./dl/dd[@class="PlayNow"]/a')[0].get('href')
+      #Log(episodeId)
+      episodeId = episodeId.split('PlayEpisode(')[1].replace(")", "")
+      #Log(episodeId)
+      url = GetVideoFromEpisodeId(episodeId, network)
+      level = 0
+      if SilverlightCheck(url, level): url = url + '#Silverlight'
+      else: url = url + '#Flash'
+      dir.Append(WebVideoItem(url, title, date="", summary=summary, art=sender.art, thumb=thumb))
   return dir
 
 ################################################################################
